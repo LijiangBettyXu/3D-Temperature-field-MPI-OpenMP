@@ -1,0 +1,41 @@
+#!/bin/bash
+########## Define Resources Needed with SBATCH Lines ##########
+
+#SBATCH --time=03:00:00             # limit of wall clock time - how long the job will run (same as -t)
+#SBATCH --nodes=1                   # Number of nodes to allocate
+#SBATCH --ntasks-per-node=128         # number of tasks - how many tasks (nodes) that you require (same as -n)
+#SBATCH --cpus-per-task=1           # number of CPUs (or cores) per task (same as -c)
+#SBATCH --mem=64G                    # memory required per node - amount of memory (in bytes)
+#SBATCH --job-name Name_of_Job      # you can give your job a name for easier identification (same as -J)
+
+##### SLURM Administrative Settings #####
+
+#SBATCH --job-name=mpi                          #Name the job for convenience
+#SBATCH --output=%x-%j.SLURMout                 #Name the output file (JobName-JobNumber.SLURMout)
+#SBATCH --mail-type=ALL                         #Tell SLURM to email you when job starts, stops, error
+#SBATCH --mail-user=xulijian@msu.edu            #Provide SLURM your email address
+
+########## Command Lines to Run ##########
+
+cd /mnt/home/xulijian/CSE822/project                #Navigate to the directory contaning my_part4
+cd $SLURM_SUBMIT_DIR                                    ### change to the directory where your code is located
+
+for N in 21 41 81 161 321
+do	
+	echo "========================================================"
+	echo "Run for ${N}: "
+
+	# Loop over the desired thread counts
+	for num in 1 2 4 8 16 32 64 128
+	do
+       		echo "Run for ${num}: " 
+      		srun -n ${num} ./mpi ${N}  >> ./output/MPI/try3/result_${N}.txt
+	done
+        echo "Finish the program for size = ${N}."
+done
+
+scontrol show job $SLURM_JOB_ID     ### write job information to output file
+
+
+# To view submitted jobs: squeue -l -u xulijian
+# To cancel a submitted job: scancel [jobID]
