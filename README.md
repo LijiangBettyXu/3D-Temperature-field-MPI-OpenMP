@@ -37,6 +37,21 @@ For the MPI implementation, we have employed a domain decomposition strategy to 
 
 We have conducted a series of experiments to evaluate the performance of both implementations for different problem sizes and varying numbers of processing elements or threads. The reauslt is averaged for multiple trails for stability. 
 
+### Results: <br>
+
+<img width="792" alt="image" src="https://user-images.githubusercontent.com/122394634/233436134-d5cbfef6-6a40-47c7-a4e5-b957525ee854.png">
+
+<img width="808" alt="image" src="https://user-images.githubusercontent.com/122394634/233475510-a5406e65-b2a1-4a13-8350-d384d57f6623.png">
+
+<img width="809" alt="image" src="https://user-images.githubusercontent.com/122394634/233475565-467ad5ea-3631-469b-a4a0-242953a4c27f.png">
+
+
+OpenMP:
+<img width="1366" alt="image" src="https://user-images.githubusercontent.com/122394634/233439516-0e780d64-1f1a-4cc6-9ddb-ca37ca3468c0.png">
+
+MPI:
+<img width="1366" alt="image" src="https://user-images.githubusercontent.com/122394634/233439939-47f76673-9789-4f96-90c7-c674c0a0b8b1.png">
+
 
 
 
