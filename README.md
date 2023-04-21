@@ -9,20 +9,21 @@ In this project, the performance of a 3D temperature field calculation have been
 Results are analyzed in terms of execution time, speed-up, and efficiency, taking into consideration Amdahl's law and other factors that affect parallel performance. The project also discusses the trade-offs between MPI and OpenMP in terms of code complexity, maintainability, and portability. This comprehensive comparison between MPI and OpenMP in the context of a 3D temperature field calculation provides valuable insights for practitioners and researchers seeking to optimize their parallel computing strategies for similar scientific and engineering problems.
 
 ### Parameters:<br>
-Side Length (L): 5 <br>
+Side Length (L): 5m <br>
 Discretization (N): 21, 41, 81, 161, 321 <br>
-grid size(∆x = ∆y = ∆z): L /(N - 1) <br>
+Grid size(∆x = ∆y = ∆z): L /(N - 1) <br>
+Thermal Conductivity coefficient (𝛼): 0.001 W/mK <br>
 
 ### Initial condition:<br>
-Sphere at center with radius = 0.1<br>
-Sphere high temperature = 100<br>
+Sphere at center with radius = 0.1m<br>
+Sphere high temperature = 100 Celcius<br>
 
 ### Boundary condition: <br>
 No-flux Neuman boundary condition at the boundary of the cube.<br>
 
 Heat Equation and the differential format using Forward Euler method:<br>
 
-<img width="781" alt="image" src="https://user-images.githubusercontent.com/122394634/233174175-b3efcce0-ea73-4250-9f44-023ad39db3b9.png">
+<img width="980" alt="image" src="https://user-images.githubusercontent.com/122394634/233512286-d13ef1fe-785d-4268-87bd-2e0d8bced2d3.png">
 
 ### Impelementation: <br>
 
@@ -44,11 +45,11 @@ We have conducted a series of experiments to evaluate the performance of both im
 
 ## Results: <br>
 
-<img width="792" alt="image" src="https://user-images.githubusercontent.com/122394634/233436134-d5cbfef6-6a40-47c7-a4e5-b957525ee854.png">
+<img width="735" alt="image" src="https://user-images.githubusercontent.com/122394634/233512371-ba20512d-7e4f-4c78-9257-b6e6a43f20ea.png">
 
 ### For the time used in OpenMP: 
 
-As I increase the number of parallel threads from 1, 2, 4, 8, 16, 32, 64, to 128, the execution time decreases. This decrease is more pronounced as the discretization number N increases. For N = 21, the decrease is relatively small until 64 threads, after which the time suddenly increases. For N = 41, the decrease is more noticeable until 64 threads, but the time also increases afterward. However, for N = 81, 161, and 321, the time decrease becomes more significant, and there is almost no increase after using 64 threads. 
+As I increase the number of parallel threads from 1, 2, 4, 8, 16, 32, 64, to 128, the execution time decreases. This decrease is more pronounced as the discretization number N increases. For N = 21, the decrease is relatively small until 64 threads, after which the time suddenly increases. For N = 41, the decrease is more noticeable until 64 threads, then there is a slightly increases afterward. For N = 81, 161, and 321, the time decrease becomes more significant, and there is almost no increase after using 64 threads. 
 
 1) I think the speedup I observe when using more threads is more significant for larger N values because the workload is larger, leading to better utilization of the available CPU resources. The cache locality and hardware limitations play a more significant role in limiting the speedup for smaller N values. 
 <pre>
@@ -77,13 +78,15 @@ Better parallelism in OpenMP: The OpenMP implementation may be better suited to 
 
 Increased overhead in MPI: As the problem size grows, the overhead associated with managing processes in MPI might increase, leading to slower execution times. In contrast, the overhead in OpenMP might not be as significant, allowing for faster execution times as N increases.
 
-<img width="808" alt="image" src="https://user-images.githubusercontent.com/122394634/233475510-a5406e65-b2a1-4a13-8350-d384d57f6623.png">
+Speed up: <br>
+With T1 the execution time on a single processor and Tp the time on p processors, we define the speedup as Sp = T1/Tp.
 
-<img width="809" alt="image" src="https://user-images.githubusercontent.com/122394634/233475565-467ad5ea-3631-469b-a4a0-242953a4c27f.png">
+Efficiency: <br>
+Ep = Sp/p. (0 < Ep ≤ 1). To measure how far we are from the ideal speedup.
 
-OpenMP:
-<img width="1366" alt="image" src="https://user-images.githubusercontent.com/122394634/233439516-0e780d64-1f1a-4cc6-9ddb-ca37ca3468c0.png">
+<img width="1376" alt="image" src="https://user-images.githubusercontent.com/122394634/233512872-2cd45971-b3f2-41dd-9ce8-3e53a1e59d07.png">
 
-MPI:
-<img width="1366" alt="image" src="https://user-images.githubusercontent.com/122394634/233439939-47f76673-9789-4f96-90c7-c674c0a0b8b1.png">
+<img width="1383" alt="image" src="https://user-images.githubusercontent.com/122394634/233512571-d8b92787-d5cd-4b7a-aa31-1efca9f4101a.png">
+
+
 
