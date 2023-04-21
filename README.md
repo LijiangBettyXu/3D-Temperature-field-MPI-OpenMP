@@ -25,7 +25,7 @@ Heat Equation and the differential format using Forward Euler method:<br>
 
 <img width="980" alt="image" src="https://user-images.githubusercontent.com/122394634/233512286-d13ef1fe-785d-4268-87bd-2e0d8bced2d3.png">
 
-### Impelementation: <br>
+## Impelementation: <br>
 
 The OpenMP file: <br>
 TempAvg.cpp <br>
@@ -43,7 +43,7 @@ For the MPI implementation, we have employed a domain decomposition strategy to 
 
 We have conducted a series of experiments to evaluate the performance of both implementations for different problem sizes and varying numbers of processing elements or threads. The reauslt is averaged for multiple trails for stability. 
 
-## Results: <br>
+## Results using AMD20: <br>
 
 <img width="735" alt="image" src="https://user-images.githubusercontent.com/122394634/233512371-ba20512d-7e4f-4c78-9257-b6e6a43f20ea.png">
 
@@ -78,15 +78,28 @@ Better parallelism in OpenMP: The OpenMP implementation may be better suited to 
 
 Increased overhead in MPI: As the problem size grows, the overhead associated with managing processes in MPI might increase, leading to slower execution times. In contrast, the overhead in OpenMP might not be as significant, allowing for faster execution times as N increases.
 
-Speed up: <br>
+### Speed up: <br>
 With T1 the execution time on a single processor and Tp the time on p processors, we define the speedup as Sp = T1/Tp.
 
-Efficiency: <br>
+### Efficiency: <br>
 Ep = Sp/p. (0 < Ep ≤ 1). To measure how far we are from the ideal speedup.
 
 <img width="1376" alt="image" src="https://user-images.githubusercontent.com/122394634/233512872-2cd45971-b3f2-41dd-9ce8-3e53a1e59d07.png">
 
 <img width="1383" alt="image" src="https://user-images.githubusercontent.com/122394634/233512571-d8b92787-d5cd-4b7a-aa31-1efca9f4101a.png">
+
+From the figure shown above, no matter the N, the speed up and Efficiency of MPI is higher than that of OpenMP when the threads using below and equal to 32. But when increasing threads, the advantage of speed and Efficiency of MPI suddenly drops then it has been surpassed by OpenMP with larger N.
+
+The observed behavior can be attributed to several factors related to the differences between MPI and OpenMP, and the way these parallel frameworks handle communication, computation, and resource allocation.
+
+1. MPI is faster with smaller N: MPI divides the workload among separate processes, each with its own memory space. This reduces the need for synchronization overhead compared to OpenMP, which uses shared memory and requires more synchronization among threads. With smaller N, the communication overhead between MPI processes is relatively low, so MPI can perform better than OpenMP.
+
+2. MPI speedup and efficiency drop when N increases: As N grows, the amount of data that needs to be communicated between MPI processes also increases, resulting in higher communication overhead. In contrast, OpenMP's shared memory model allows more efficient data access, so it becomes more advantageous as the problem size grows.
+
+3. OpenMP gets better in speedup and efficiency when N gets larger: OpenMP uses a shared memory model, which allows threads to access data more efficiently as the problem size increases. With larger N, the computation-to-communication ratio is higher, which means that OpenMP threads can spend more time on computation and less time waiting for synchronization. As a result, OpenMP's performance improves with larger N values.
+
+
+
 
 
 
